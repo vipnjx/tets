@@ -33,6 +33,7 @@
       flex-wrap: wrap;
       gap: 15px;
       margin-bottom: 15px;
+      align-items: flex-end;
     }
     .form-group div {
       flex: 1 1 200px;
@@ -56,8 +57,8 @@
     button {
       background-color: #00c853;
       border: none;
-      margin-top: 10px;
       cursor: pointer;
+      margin-top: 0;
     }
     button:hover {
       background-color: #00b342;
@@ -83,6 +84,12 @@
       margin-top: 20px;
       background-color: #1e1e1e;
       border-radius: 8px;
+    }
+    .resultado-final {
+      margin-top: 20px;
+      font-size: 16px;
+      color: #00ff66;
+      text-align: center;
     }
     @media (max-width: 600px) {
       .form-group {
@@ -125,6 +132,7 @@
       </thead>
       <tbody></tbody>
     </table>
+    <div class="resultado-final" id="lucroTotalFinal"></div>
   </div>
 
   <script>
@@ -132,11 +140,14 @@
       const valorInicial = parseFloat(document.getElementById('valorInicial').value);
       const taxaLucro = parseFloat(document.getElementById('taxaLucro').value) / 100;
 
+      if (isNaN(valorInicial) || isNaN(taxaLucro)) return;
+
       const dias = 30;
       let valorAtual = valorInicial;
       const labels = [];
       const valores = [];
       const tbody = document.querySelector('#tabelaResultados tbody');
+      const lucroTotalEl = document.getElementById('lucroTotalFinal');
       tbody.innerHTML = '';
 
       for (let dia = 1; dia <= dias; dia++) {
@@ -155,7 +166,9 @@
         tbody.innerHTML += linha;
       }
 
-      // Atualiza o gráfico
+      const lucroTotal = valorAtual - valorInicial;
+      lucroTotalEl.innerHTML = `Lucro total após 30 dias: <strong>R$ ${lucroTotal.toFixed(2)}</strong>`;
+
       const ctx = document.getElementById('grafico').getContext('2d');
       if (window.graficoLucros) window.graficoLucros.destroy();
       window.graficoLucros = new Chart(ctx, {
@@ -173,9 +186,7 @@
         options: {
           responsive: true,
           plugins: {
-            legend: {
-              labels: { color: '#f1f1f1' }
-            }
+            legend: { labels: { color: '#f1f1f1' } }
           },
           scales: {
             x: { ticks: { color: '#aaa' } },
