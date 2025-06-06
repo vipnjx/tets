@@ -185,49 +185,49 @@
         window.myChart.destroy();
       }
       window.myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: Array.from({ length: dias + 1 }, (_, i) => i),
-          datasets: [{
-            label: 'Valor Acumulado (R$)',
-            data: dadosGrafico,
-            backgroundColor: '#4caf50'
-          }]
+  type: 'bar',
+  data: {
+    labels: Array.from({ length: dias + 1 }, (_, i) => i),
+    datasets: [{
+      label: 'Valor Acumulado (R$)',
+      data: dadosGrafico,
+      backgroundColor: '#4caf50' // Verde
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Dias',
+          color: '#fff'
         },
-        options: {
-          responsive: true,
-          scales: {
-            x: {
-              title: {
-                display: true,
-                text: 'Dias',
-                color: '#fff'
-              },
-              ticks: {
-                color: '#ccc'
-              }
-            },
-            y: {
-              title: {
-                display: true,
-                text: 'Valor (R$)',
-                color: '#fff'
-              },
-              beginAtZero: true,
-              ticks: {
-                color: '#ccc'
-              }
-            }
-          },
-          plugins: {
-            legend: {
-              labels: {
-                color: '#fff'
-              }
-            }
-          }
+        ticks: {
+          color: '#ccc'
         }
-      });
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Valor (R$)',
+          color: '#fff'
+        },
+        beginAtZero: true,
+        ticks: {
+          color: '#ccc'
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        labels: {
+          color: '#fff'
+        }
+      }
+    }
+  }
+});
     }
   </script>
 </body>
