@@ -1,277 +1,185 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Calculadora IA BET NJX</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculadora IA Bet NJX</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    font-family: 'Segoe UI', sans-serif;
-    margin: 0;
-    background-color: #121212;
-    color: #f1f1f1;
-    padding: 15px;
-  }
-  .container {
-    background: #1e1e1e;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.6);
-    max-width: 900px;
-    margin: auto;
-  }
-  h2 {
-    margin-bottom: 10px;
-    color: #ffffff;
-    text-align: center;
-    font-size: 20px;
-  }
-  .form-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-bottom: 15px;
-  }
-  .form-group div {
-    flex: 1 1 200px;
-    min-width: 180px;
-  }
-  label {
-    display: block;
-    margin-bottom: 4px;
-    color: #ccc;
-    font-size: 14px;
-  }
-  input, select, button {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #444;
-    border-radius: 5px;
-    font-size: 14px;
-    background-color: #2a2a2a;
-    color: #f1f1f1;
-  }
-  button {
-    background-color: #00c853;
-    color: #fff;
-    cursor: pointer;
-    border: none;
-    margin-top: 10px;
-  }
-  button:hover {
-    background-color: #00b342;
-  }
-  .result-cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin: 20px 0;
-    gap: 10px;
-  }
-  .card {
-    background-color: #2a2a2a;
-    padding: 10px;
-    border-radius: 8px;
-    text-align: center;
-    flex: 1 1 180px;
-  }
-  .card h3 {
-    font-size: 14px;
-    margin-bottom: 5px;
-    color: #ffffff;
-  }
-  .card p {
-    font-size: 16px;
-    font-weight: bold;
-    margin: 0;
-  }
-  .chart-container {
-    margin-top: 20px;
-    overflow-x: auto;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    font-size: 13px;
-  }
-  th, td {
-    padding: 8px;
-    text-align: center;
-    border: 1px solid #444;
-  }
-  th {
-    background-color: #2e2e2e;
-    color: #fff;
-  }
-  td {
-    background-color: #1a1a1a;
-  }
-
-  @media (max-width: 600px) {
+    * { box-sizing: border-box; }
     body {
-      padding: 10px;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background-color: #121212;
+      color: #f1f1f1;
+      padding: 15px;
     }
     .container {
-      padding: 10px;
+      background: #1e1e1e;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+      max-width: 900px;
+      margin: auto;
     }
     h2 {
-      font-size: 18px;
       margin-bottom: 10px;
+      color: #ffffff;
+      text-align: center;
+      font-size: 20px;
     }
     .form-group {
-      flex-direction: column;
-      gap: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 15px;
     }
     .form-group div {
-      min-width: 100%;
+      flex: 1 1 200px;
+      min-width: 180px;
     }
-    .result-cards {
-      flex-direction: column;
-      gap: 10px;
+    label {
+      display: block;
+      margin-bottom: 4px;
+      color: #ccc;
+      font-size: 14px;
     }
-    .card {
+    input, button {
+      width: 100%;
       padding: 8px;
+      border: 1px solid #444;
+      border-radius: 5px;
+      font-size: 14px;
+      background-color: #2a2a2a;
+      color: #f1f1f1;
     }
-    canvas {
-      max-width: 100%;
+    button {
+      background-color: #00c853;
+      border: none;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #00b342;
     }
     table {
-      font-size: 12px;
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      font-size: 14px;
     }
-  }
-</style>
+    th, td {
+      border: 1px solid #444;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #2e2e2e;
+    }
+    td {
+      background-color: #1a1a1a;
+    }
+    canvas {
+      margin-top: 20px;
+      background-color: #1e1e1e;
+      border-radius: 8px;
+    }
+    @media (max-width: 600px) {
+      .form-group {
+        flex-direction: column;
+        gap: 6px;
+      }
+      .form-group div {
+        min-width: 100%;
+      }
+      table {
+        font-size: 12px;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <h2>CALCULADORA IA BET NJX</h2>
+    <h2>Calculadora IA Bet NJX</h2>
     <div class="form-group">
       <div>
-        <label>Valor Inicial (R$)</label>
-        <input type="number" id="valorInicial" value="1000">
+        <label for="valorInicial">Valor Inicial</label>
+        <input type="number" id="valorInicial" placeholder="R$ 0,00" />
       </div>
       <div>
-        <label>Taxa de Lucro ao Dia (%)</label>
-        <input type="number" id="taxaLucro" value="0.5" step="0.01">
+        <label for="taxaLucro">Taxa de Lucros (ao dia)</label>
+        <input type="number" id="taxaLucro" placeholder="%" />
+      </div>
+      <div>
+        <button onclick="calcular()">Calcular</button>
       </div>
     </div>
-    <button onclick="calcularLucros()">CALCULAR</button>
-
-    <div class="result-cards">
-      <div class="card">
-        <h3>Total em Lucros</h3>
-        <p id="totalLucros">R$ 0,00</p>
-      </div>
-      <div class="card">
-        <h3>Valor Investido</h3>
-        <p id="valorInvestido">R$ 0,00</p>
-      </div>
-      <div class="card">
-        <h3>Valor Final</h3>
-        <p id="valorFinal">R$ 0,00</p>
-      </div>
-    </div>
-
-    <div class="chart-container">
-      <canvas id="graficoLucros" height="100"></canvas>
-    </div>
-
-    <div style="overflow-x: auto;">
-      <table>
-        <thead>
-          <tr>
-            <th>Dias</th>
-            <th>Lucro do Dia</th>
-            <th>Total Investido</th>
-            <th>Lucro Acumulado</th>
-            <th>Acumulado</th>
-          </tr>
-        </thead>
-        <tbody id="tabelaResultados"></tbody>
-      </table>
-    </div>
+    <canvas id="grafico"></canvas>
+    <table id="tabelaResultados">
+      <thead>
+        <tr>
+          <th>Dia</th>
+          <th>Lucro Diário</th>
+          <th>Valor Acumulado</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
 
   <script>
-    function calcularLucros() {
-      const P = parseFloat(document.getElementById('valorInicial').value);
-      const taxaDiaria = parseFloat(document.getElementById('taxaLucro').value) / 100;
+    function calcular() {
+      const valorInicial = parseFloat(document.getElementById('valorInicial').value);
+      const taxaLucro = parseFloat(document.getElementById('taxaLucro').value) / 100;
+
       const dias = 30;
+      let valorAtual = valorInicial;
+      const labels = [];
+      const valores = [];
+      const tbody = document.querySelector('#tabelaResultados tbody');
+      tbody.innerHTML = '';
 
-      let dadosGrafico = [];
-      let totalLucros = 0;
-      let tabelaHTML = "";
+      for (let dia = 1; dia <= dias; dia++) {
+        const lucro = valorAtual * taxaLucro;
+        valorAtual += lucro;
 
-      for (let dia = 0; dia <= dias; dia++) {
-        const montante = P * Math.pow(1 + taxaDiaria, dia);
-        const lucro = montante - P;
-        tabelaHTML += `
+        labels.push('Dia ' + dia);
+        valores.push(valorAtual.toFixed(2));
+
+        const linha = `
           <tr>
             <td>${dia}</td>
             <td>R$ ${lucro.toFixed(2)}</td>
-            <td>R$ ${P.toFixed(2)}</td>
-            <td>R$ ${(lucro).toFixed(2)}</td>
-            <td>R$ ${montante.toFixed(2)}</td>
-          </tr>
-        `;
-        dadosGrafico.push(montante.toFixed(2));
-        if (dia === dias) totalLucros = lucro;
+            <td style="color: #00ff66">R$ ${valorAtual.toFixed(2)}</td>
+          </tr>`;
+        tbody.innerHTML += linha;
       }
 
-      document.getElementById("tabelaResultados").innerHTML = tabelaHTML;
-      document.getElementById("valorInvestido").textContent = `R$ ${P.toFixed(2)}`;
-      document.getElementById("totalLucros").textContent = `R$ ${totalLucros.toFixed(2)}`;
-      document.getElementById("valorFinal").textContent = `R$ ${(P + totalLucros).toFixed(2)}`;
-
-      const ctx = document.getElementById('graficoLucros').getContext('2d');
-      if (window.myChart) {
-        window.myChart.destroy();
-      }
-      window.myChart = new Chart(ctx, {
-        type: 'bar',
+      // Atualiza o gráfico
+      const ctx = document.getElementById('grafico').getContext('2d');
+      if (window.graficoLucros) window.graficoLucros.destroy();
+      window.graficoLucros = new Chart(ctx, {
+        type: 'line',
         data: {
-          labels: Array.from({ length: dias + 1 }, (_, i) => i),
+          labels: labels,
           datasets: [{
-            label: 'Valor Acumulado (R$)',
-            data: dadosGrafico,
-            backgroundColor: '#4caf50'
+            label: 'Valor Acumulado',
+            data: valores,
+            borderColor: '#00ff66',
+            backgroundColor: 'transparent',
+            tension: 0.25
           }]
         },
         options: {
           responsive: true,
-          scales: {
-            x: {
-              title: {
-                display: true,
-                text: 'Dias',
-                color: '#fff'
-              },
-              ticks: {
-                color: '#ccc'
-              }
-            },
-            y: {
-              title: {
-                display: true,
-                text: 'Valor (R$)',
-                color: '#fff'
-              },
-              beginAtZero: true,
-              ticks: {
-                color: '#ccc'
-              }
-            }
-          },
           plugins: {
             legend: {
-              labels: {
-                color: '#fff'
-              }
+              labels: { color: '#f1f1f1' }
             }
+          },
+          scales: {
+            x: { ticks: { color: '#aaa' } },
+            y: { ticks: { color: '#aaa' } }
           }
         }
       });
