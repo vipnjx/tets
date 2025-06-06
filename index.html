@@ -35,9 +35,12 @@
       margin-bottom: 15px;
       align-items: flex-end;
     }
-    .form-group div {
+    .form-group .field {
       flex: 1 1 200px;
       min-width: 180px;
+    }
+    .form-group .button-wrapper {
+      flex: 0 0 auto;
     }
     label {
       display: block;
@@ -58,7 +61,6 @@
       background-color: #00c853;
       border: none;
       cursor: pointer;
-      margin-top: 0;
     }
     button:hover {
       background-color: #00b342;
@@ -94,10 +96,11 @@
     @media (max-width: 600px) {
       .form-group {
         flex-direction: column;
-        gap: 6px;
+        gap: 10px;
       }
-      .form-group div {
-        min-width: 100%;
+      .form-group .field,
+      .form-group .button-wrapper {
+        width: 100%;
       }
       table {
         font-size: 12px;
@@ -109,15 +112,15 @@
   <div class="container">
     <h2>Calculadora IA Bet NJX</h2>
     <div class="form-group">
-      <div>
+      <div class="field">
         <label for="valorInicial">Valor Inicial</label>
         <input type="number" id="valorInicial" placeholder="R$ 0,00" />
       </div>
-      <div>
+      <div class="field">
         <label for="taxaLucro">Taxa de Lucros (ao dia)</label>
         <input type="number" id="taxaLucro" placeholder="%" />
       </div>
-      <div>
+      <div class="button-wrapper">
         <button onclick="calcular()">Calcular</button>
       </div>
     </div>
@@ -198,3 +201,4 @@
   </script>
 </body>
 </html>
+
