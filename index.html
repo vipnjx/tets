@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Simulador de Juros Compostos</title>
+  <title>Calculadora IA BET NJX</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     * {
@@ -87,23 +87,23 @@
 </head>
 <body>
   <div class="container">
-    <h2>SIMULADOR DE JUROS COMPOSTOS</h2>
+    <h2>CALCULADORA IA BET NJX</h2>
     <div class="form-group">
       <div>
         <label>Valor Inicial (R$)</label>
         <input type="number" id="valorInicial" value="1000">
       </div>
       <div>
-        <label>Taxa de Juros ao Dia (%)</label>
-        <input type="number" id="taxaJuros" value="0.5" step="0.01">
+        <label>Taxa de Lucro ao Dia (%)</label>
+        <input type="number" id="taxaLucro" value="0.5" step="0.01">
       </div>
     </div>
-    <button onclick="calcularJuros()">CALCULAR</button>
+    <button onclick="calcularLucros()">CALCULAR</button>
 
     <div class="result-cards">
       <div class="card">
-        <h3>Total em Juros</h3>
-        <p id="totalJuros">R$ 0,00</p>
+        <h3>Total em Lucros</h3>
+        <p id="totalLucros">R$ 0,00</p>
       </div>
       <div class="card">
         <h3>Valor Investido</h3>
@@ -116,16 +116,16 @@
     </div>
 
     <div class="chart-container">
-      <canvas id="graficoJuros" height="100"></canvas>
+      <canvas id="graficoLucros" height="100"></canvas>
     </div>
 
     <table>
       <thead>
         <tr>
           <th>Dias</th>
-          <th>Juros</th>
+          <th>Lucro do Dia</th>
           <th>Total Investido</th>
-          <th>Total Juros</th>
+          <th>Lucro Acumulado</th>
           <th>Acumulado</th>
         </tr>
       </thead>
@@ -134,37 +134,37 @@
   </div>
 
   <script>
-    function calcularJuros() {
+    function calcularLucros() {
       const P = parseFloat(document.getElementById('valorInicial').value);
-      const taxaDiaria = parseFloat(document.getElementById('taxaJuros').value) / 100;
+      const taxaDiaria = parseFloat(document.getElementById('taxaLucro').value) / 100;
       const dias = 30;
 
       let dadosGrafico = [];
-      let totalJuros = 0;
+      let totalLucros = 0;
       let tabelaHTML = "";
 
       for (let dia = 0; dia <= dias; dia++) {
         const montante = P * Math.pow(1 + taxaDiaria, dia);
-        const juros = montante - P;
+        const lucro = montante - P;
         tabelaHTML += `
           <tr>
             <td>${dia}</td>
-            <td>R$ ${juros.toFixed(2)}</td>
+            <td>R$ ${lucro.toFixed(2)}</td>
             <td>R$ ${P.toFixed(2)}</td>
-            <td>R$ ${(juros).toFixed(2)}</td>
+            <td>R$ ${(lucro).toFixed(2)}</td>
             <td>R$ ${montante.toFixed(2)}</td>
           </tr>
         `;
         dadosGrafico.push(montante.toFixed(2));
-        if (dia === dias) totalJuros = juros;
+        if (dia === dias) totalLucros = lucro;
       }
 
       document.getElementById("tabelaResultados").innerHTML = tabelaHTML;
       document.getElementById("valorInvestido").textContent = `R$ ${P.toFixed(2)}`;
-      document.getElementById("totalJuros").textContent = `R$ ${totalJuros.toFixed(2)}`;
-      document.getElementById("valorFinal").textContent = `R$ ${(P + totalJuros).toFixed(2)}`;
+      document.getElementById("totalLucros").textContent = `R$ ${totalLucros.toFixed(2)}`;
+      document.getElementById("valorFinal").textContent = `R$ ${(P + totalLucros).toFixed(2)}`;
 
-      const ctx = document.getElementById('graficoJuros').getContext('2d');
+      const ctx = document.getElementById('graficoLucros').getContext('2d');
       if (window.myChart) {
         window.myChart.destroy();
       }
