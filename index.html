@@ -11,20 +11,21 @@
     body {
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
-      background-color: #f8f9fa;
-      color: #333;
+      background-color: #121212;
+      color: #f1f1f1;
       padding: 20px;
     }
     .container {
-      background: #fff;
+      background: #1e1e1e;
       border-radius: 8px;
       padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.6);
       max-width: 900px;
       margin: auto;
     }
     h2 {
       margin-bottom: 10px;
+      color: #ffffff;
     }
     .form-group {
       display: flex;
@@ -35,6 +36,7 @@
     .form-group label {
       display: block;
       margin-bottom: 5px;
+      color: #ccc;
     }
     .form-group div {
       flex: 1 1 200px;
@@ -42,17 +44,20 @@
     input, select, button {
       width: 100%;
       padding: 10px;
-      border: 1px solid #ccc;
+      border: 1px solid #444;
       border-radius: 5px;
       font-size: 14px;
+      background-color: #2a2a2a;
+      color: #f1f1f1;
     }
     button {
-      background-color: #000;
+      background-color: #00c853;
       color: #fff;
       cursor: pointer;
+      border: none;
     }
     button:hover {
-      background-color: #333;
+      background-color: #00b342;
     }
     .result-cards {
       display: flex;
@@ -60,12 +65,19 @@
       margin: 30px 0;
     }
     .card {
-      background-color: #f1f3f5;
+      background-color: #2a2a2a;
       padding: 15px;
       border-radius: 10px;
       text-align: center;
       flex: 1;
       margin: 0 10px;
+    }
+    .card h3 {
+      color: #ffffff;
+    }
+    .card p {
+      font-size: 18px;
+      font-weight: bold;
     }
     .chart-container {
       margin-top: 40px;
@@ -78,10 +90,14 @@
     th, td {
       padding: 10px;
       text-align: center;
-      border: 1px solid #ccc;
+      border: 1px solid #444;
     }
     th {
-      background-color: #f1f1f1;
+      background-color: #2e2e2e;
+      color: #fff;
+    }
+    td {
+      background-color: #1a1a1a;
     }
   </style>
 </head>
@@ -175,7 +191,7 @@
           datasets: [{
             label: 'Valor Acumulado (R$)',
             data: dadosGrafico,
-            backgroundColor: '#4dabf7'
+            backgroundColor: '#4caf50'
           }]
         },
         options: {
@@ -184,15 +200,30 @@
             x: {
               title: {
                 display: true,
-                text: 'Dias'
+                text: 'Dias',
+                color: '#fff'
+              },
+              ticks: {
+                color: '#ccc'
               }
             },
             y: {
               title: {
                 display: true,
-                text: 'Valor (R$)'
+                text: 'Valor (R$)',
+                color: '#fff'
               },
-              beginAtZero: true
+              beginAtZero: true,
+              ticks: {
+                color: '#ccc'
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              labels: {
+                color: '#fff'
+              }
             }
           }
         }
