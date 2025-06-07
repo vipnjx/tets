@@ -56,6 +56,9 @@
     .odd-group {
       margin-bottom: 10px;
     }
+    #chartContainer {
+      margin-top: 40px;
+    }
   </style>
 </head>
 <body>
@@ -75,6 +78,9 @@
     <button onclick="calculateDutching()">Calcular</button>
 
     <div class="result" id="results"></div>
+    <div id="chartContainer">
+      <canvas id="profitChart"></canvas>
+    </div>
   </div>
 
   <script>
@@ -122,7 +128,7 @@
 
       const inverseSum = odds.reduce((sum, odd) => sum + 1 / odd, 0);
       const stakes = odds.map(odd => (stake / odd) / inverseSum);
-      const profit = stakes.map((s, i) => (s * odds[i]) - stake);
+      const profits = stakes.map((s, i) => (s * odds[i]) - stake);
 
       let resultHtml = '<h3>Distribuição das Apostas</h3><ul>';
       stakes.forEach((s, i) => {
@@ -130,8 +136,58 @@
       });
       resultHtml += '</ul>';
 
-      resultHtml += `<h3>Lucro Esperado: <span style="color: #00ff88">R$ ${profit[0].toFixed(2)}</span></h3>`;
+      resultHtml += `<h3>Lucro Esperado: <span style="color: #00ff88">R$ ${profits[0].toFixed(2)}</span></h3>`;
       document.getElementById('results').innerHTML = resultHtml;
+
+      // Gráfico
+      const ctx = document.getElementById('profitChart').getContext('2d');
+      if (window.profitChart) {
+        window.profitChart.destroy();
+      }
+      window.profitChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: odds.map((_, i) => `Odd ${i + 1}`),
+          datasets: [
+            {
+              label: 'Investimento (R$)',
+              data: stakes,
+              backgroundColor: 'rgba(0, 255, 136, 0.5)',
+              borderColor: 'rgba(0, 255, 136, 1)',
+              borderWidth: 1
+            },
+            {
+              label: 'Lucro (R$)',
+              data: profits,
+              backgroundColor: 'rgba(0, 136, 255, 0.5)',
+              borderColor: 'rgba(0, 136, 255, 1)',
+              borderWidth: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: {
+                color: '#fff'
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: {
+                color: '#fff'
+              }
+            },
+            y: {
+              ticks: {
+                color: '#fff'
+              }
+            }
+          }
+        }
+      });
     }
   </script>
 </body>
