@@ -89,9 +89,19 @@
     }
 
     function formatDecimalInput(el) {
-      let value = el.value.replace(/[^\d,]/g, '').replace(',', '.');
-      if (!isNaN(value) && value !== '') {
-        el.value = parseFloat(value).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      let value = el.value.replace(/[^\d]/g, '');
+
+      if (value.length > 3) {
+        let intPart = value.slice(0, value.length - 2);
+        let decimalPart = value.slice(value.length - 2);
+        value = intPart + '.' + decimalPart;
+      } else if (value.length > 0) {
+        value = '0.' + value.padStart(2, '0');
+      }
+
+      const number = parseFloat(value);
+      if (!isNaN(number)) {
+        el.value = number.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       }
     }
 
