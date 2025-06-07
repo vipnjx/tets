@@ -1,190 +1,199 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Calculadora Dutching</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IA Bet NJX</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
+    * { box-sizing: border-box; }
     body {
-      background-color: #1e1e1e;
-      color: #fff;
       font-family: 'Segoe UI', sans-serif;
-      padding: 20px;
+      margin: 0;
+      background-color: #00000000; /* fundo preto totalmente transparente */
+      color: #f1f1f1;
+      padding: 15px;
     }
     .container {
-      max-width: 700px;
+      background: rgba(30, 30, 30, 0.7); /* fundo preto com transparência */
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.7);
+      max-width: 900px;
       margin: auto;
-      background: #2c2c2c;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0, 255, 0, 0.1);
     }
     h2 {
+      margin-bottom: 10px;
+      color: #ffffff;
       text-align: center;
-      color: #00ff88;
+      font-size: 20px;
+    }
+    .form-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 15px;
+      align-items: flex-end;
+    }
+    .form-group .field {
+      flex: 1 1 200px;
+      min-width: 180px;
+    }
+    .form-group .button-wrapper {
+      flex: 0 0 auto;
     }
     label {
       display: block;
-      margin-top: 15px;
+      margin-bottom: 4px;
+      color: #ccc;
+      font-size: 14px;
     }
-    input {
+    input, button {
       width: 100%;
       padding: 8px;
-      background: #333;
-      color: #fff;
-      border: 1px solid #555;
+      border: 1px solid #444;
       border-radius: 5px;
+      font-size: 14px;
+      background-color: #2a2a2a;
+      color: #f1f1f1;
     }
     button {
-      background-color: #00ff88;
-      color: #000;
-      padding: 10px 20px;
-      margin-top: 20px;
+      background-color: #00c853;
       border: none;
-      border-radius: 8px;
       cursor: pointer;
-      width: 100%;
     }
     button:hover {
-      background-color: #00cc6e;
+      background-color: #00b342;
     }
-    .result {
+    table {
+      width: 100%;
       margin-top: 20px;
-      border-top: 1px solid #444;
-      padding-top: 20px;
+      border-collapse: collapse;
+      font-size: 14px;
     }
-    .odd-group {
-      margin-bottom: 10px;
+    th, td {
+      border: 1px solid #444;
+      padding: 8px;
+      text-align: center;
     }
-    #chartContainer {
-      margin-top: 40px;
+    th {
+      background-color: rgba(46, 46, 46, 0.7);
+    }
+    td {
+      background-color: rgba(26, 26, 26, 0.6);
+    }
+    canvas {
+      margin-top: 20px;
+      background-color: rgba(30, 30, 30, 0.4);
+      border-radius: 8px;
+    }
+    .resultado-final {
+      margin-top: 20px;
+      font-size: 16px;
+      color: #00ff66;
+      text-align: center;
+    }
+    @media (max-width: 600px) {
+      .form-group {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .form-group .field,
+      .form-group .button-wrapper {
+        width: 100%;
+      }
+      table {
+        font-size: 12px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Calculadora Dutching</h2>
-    <label for="totalStake">Valor Total da Aposta (Stake):</label>
-    <input type="number" id="totalStake" placeholder="Ex: 100" step="0.01">
-
-    <div id="oddsInputs">
-      <div class="odd-group">
-        <label>Odd 1:</label>
-        <input type="text" class="odd" step="0.01" oninput="formatDecimalInput(this)">
+    <h2>IA Bet NJX</h2>
+    <div class="form-group">
+      <div class="field">
+        <label for="valorInicial">Valor Inicial</label>
+        <input type="number" id="valorInicial" placeholder="R$ 0,00" />
+      </div>
+      <div class="field">
+        <label for="taxaLucro">Taxa de Lucros (ao dia)</label>
+        <input type="number" id="taxaLucro" placeholder="%" />
+      </div>
+      <div class="button-wrapper">
+        <button onclick="calcular()">Calcular</button>
       </div>
     </div>
-
-    <button onclick="addOdd()">+ Adicionar Odd</button>
-    <button onclick="calculateDutching()">Calcular</button>
-
-    <div class="result" id="results"></div>
-    <div id="chartContainer">
-      <canvas id="profitChart"></canvas>
-    </div>
+    <canvas id="grafico"></canvas>
+    <table id="tabelaResultados">
+      <thead>
+        <tr>
+          <th>Dia</th>
+          <th>Lucro Diário</th>
+          <th>Valor Acumulado</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div class="resultado-final" id="lucroTotalFinal"></div>
   </div>
 
   <script>
-    let oddCount = 1;
+    function calcular() {
+      const valorInicial = parseFloat(document.getElementById('valorInicial').value);
+      const taxaLucro = parseFloat(document.getElementById('taxaLucro').value) / 100;
 
-    function addOdd() {
-      oddCount++;
-      const div = document.createElement('div');
-      div.className = 'odd-group';
-      div.innerHTML = `<label>Odd ${oddCount}:</label><input type="text" class="odd" step="0.01" oninput="formatDecimalInput(this)">`;
-      document.getElementById('oddsInputs').appendChild(div);
-    }
+      if (isNaN(valorInicial) || isNaN(taxaLucro)) return;
 
-    function formatDecimalInput(el) {
-      let value = el.value.replace(/[^\d]/g, '');
+      const dias = 30;
+      let valorAtual = valorInicial;
+      const labels = [];
+      const valores = [];
+      const tbody = document.querySelector('#tabelaResultados tbody');
+      const lucroTotalEl = document.getElementById('lucroTotalFinal');
+      tbody.innerHTML = '';
 
-      if (value.length > 3) {
-        let intPart = value.slice(0, value.length - 2);
-        let decimalPart = value.slice(value.length - 2);
-        value = intPart + '.' + decimalPart;
-      } else if (value.length > 0) {
-        value = '0.' + value.padStart(2, '0');
+      for (let dia = 1; dia <= dias; dia++) {
+        const lucro = valorAtual * taxaLucro;
+        valorAtual += lucro;
+
+        labels.push('Dia ' + dia);
+        valores.push(valorAtual.toFixed(2));
+
+        const linha = `
+          <tr>
+            <td>${dia}</td>
+            <td>R$ ${lucro.toFixed(2)}</td>
+            <td style="color: #00ff66">R$ ${valorAtual.toFixed(2)}</td>
+          </tr>`;
+        tbody.innerHTML += linha;
       }
 
-      const number = parseFloat(value);
-      if (!isNaN(number)) {
-        el.value = number.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      }
-    }
+      const lucroTotal = valorAtual - valorInicial;
+      lucroTotalEl.innerHTML = `Lucro total após 30 dias: <strong>R$ ${lucroTotal.toFixed(2)}</strong>`;
 
-    function parseInputValue(input) {
-      return parseFloat(input.value.replace('.', '').replace(',', '.'));
-    }
-
-    function calculateDutching() {
-      const stake = parseFloat(document.getElementById('totalStake').value);
-      const odds = Array.from(document.getElementsByClassName('odd'))
-        .map(input => parseInputValue(input))
-        .filter(val => !isNaN(val) && val > 1);
-
-      if (!stake || odds.length < 2) {
-        alert('Insira uma stake e pelo menos duas odds válidas (acima de 1).');
-        return;
-      }
-
-      const inverseSum = odds.reduce((sum, odd) => sum + 1 / odd, 0);
-      const stakes = odds.map(odd => (stake / odd) / inverseSum);
-      const profits = stakes.map((s, i) => (s * odds[i]) - stake);
-
-      let resultHtml = '<h3>Distribuição das Apostas</h3><ul>';
-      stakes.forEach((s, i) => {
-        resultHtml += `<li>Odd ${i + 1}: R$ ${s.toFixed(2)}</li>`;
-      });
-      resultHtml += '</ul>';
-
-      resultHtml += `<h3>Lucro Esperado: <span style="color: #00ff88">R$ ${profits[0].toFixed(2)}</span></h3>`;
-      document.getElementById('results').innerHTML = resultHtml;
-
-      // Gráfico
-      const ctx = document.getElementById('profitChart').getContext('2d');
-      if (window.profitChart) {
-        window.profitChart.destroy();
-      }
-      window.profitChart = new Chart(ctx, {
-        type: 'bar',
+      const ctx = document.getElementById('grafico').getContext('2d');
+      if (window.graficoLucros) window.graficoLucros.destroy();
+      window.graficoLucros = new Chart(ctx, {
+        type: 'line',
         data: {
-          labels: odds.map((_, i) => `Odd ${i + 1}`),
-          datasets: [
-            {
-              label: 'Investimento (R$)',
-              data: stakes,
-              backgroundColor: 'rgba(0, 255, 136, 0.5)',
-              borderColor: 'rgba(0, 255, 136, 1)',
-              borderWidth: 1
-            },
-            {
-              label: 'Lucro (R$)',
-              data: profits,
-              backgroundColor: 'rgba(0, 136, 255, 0.5)',
-              borderColor: 'rgba(0, 136, 255, 1)',
-              borderWidth: 1
-            }
-          ]
+          labels: labels,
+          datasets: [{
+            label: 'Valor Acumulado',
+            data: valores,
+            borderColor: '#00ff66',
+            backgroundColor: 'transparent',
+            tension: 0.25
+          }]
         },
         options: {
           responsive: true,
           plugins: {
-            legend: {
-              labels: {
-                color: '#fff'
-              }
-            }
+            legend: { labels: { color: '#f1f1f1' } }
           },
           scales: {
-            x: {
-              ticks: {
-                color: '#fff'
-              }
-            },
-            y: {
-              ticks: {
-                color: '#fff'
-              }
-            }
+            x: { ticks: { color: '#aaa' } },
+            y: { ticks: { color: '#aaa' } }
           }
         }
       });
